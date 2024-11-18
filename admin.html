@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans leading-relaxed">
+
+  <!-- Login Form -->
+  <div id="login-page" class="min-h-screen flex justify-center items-center">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
+      <h1 class="text-2xl font-bold text-red-500 mb-6 text-center">Admin Login</h1>
+      <form id="login-form">
+        <input
+          type="text"
+          id="username"
+          placeholder="Uživatelské jméno"
+          class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="Heslo"
+          class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+          required
+        />
+        <button
+          type="submit"
+          class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 w-full rounded shadow-lg transition duration-300"
+        >
+          Přihlásit se
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="admin-page" class="hidden min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-gray-800 shadow-lg p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-red-500">Admin Panel</h1>
+        <button id="logout" class="text-gray-300 hover:text-red-400 transition">Odhlásit se</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="container mx-auto py-8">
+      <h2 class="text-2xl font-bold text-red-500 mb-4">Statistiky</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+          <h3 class="text-lg font-bold text-white mb-2">Celkem Událostí</h3>
+          <p class="text-3xl font-bold text-red-500">12</p>
+        </div>
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+          <h3 class="text-lg font-bold text-white mb-2">Aktivní Zápasy</h3>
+          <p class="text-3xl font-bold text-red-500">5</p>
+        </div>
+        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
+          <h3 class="text-lg font-bold text-white mb-2">Noví Uživatelé</h3>
+          <p class="text-3xl font-bold text-red-500">23</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold text-red-500 mb-4">Správa Událostí</h2>
+      <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
+        <form id="event-form">
+          <input
+            type="text"
+            id="event-name"
+            placeholder="Název události"
+            class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+            required
+          />
+          <input
+            type="date"
+            id="event-date"
+            class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+            required
+          />
+          <button
+            type="submit"
+            class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded shadow-lg transition duration-300"
+          >
+            Přidat událost
+          </button>
+        </form>
+      </div>
+
+      <h3 class="text-xl font-bold text-gray-300 mb-4">Seznam Událostí</h3>
+      <div id="events-list" class="space-y-4">
+        <div class="bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center">
+          <div>
+            <p class="text-lg font-bold text-white">ZRFA Finals</p>
+            <p class="text-gray-400">Datum: 15. května 2024</p>
+          </div>
+          <div>
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Upravit</button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Smazat</button>
+          </div>
+        </div>
+        <!-- Další události mohou být zde dynamicky přidány -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Přihlášení a odhlášení
+    const loginPage = document.getElementById("login-page");
+    const adminPage = document.getElementById("admin-page");
+    const loginForm = document.getElementById("login-form");
+    const logoutButton = document.getElementById("logout");
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (username === "admin" && password === "admin123") {
+        loginPage.classList.add("hidden");
+        adminPage.classList.remove("hidden");
+      } else {
+        alert("Špatné uživatelské jméno nebo heslo!");
+      }
+    });
+
+    logoutButton.addEventListener("click", () => {
+      adminPage.classList.add("hidden");
+      loginPage.classList.remove("hidden");
+    });
+
+    // Přidávání událostí
+    const eventForm = document.getElementById("event-form");
+    const eventsList = document.getElementById("events-list");
+
+    eventForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const eventName = document.getElementById("event-name").value;
+      const eventDate = document.getElementById("event-date").value;
+
+      const newEvent = document.createElement("div");
+      newEvent.className =
+        "bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center";
+      newEvent.innerHTML = `
+        <div>
+          <p class="text-lg font-bold text-white">${eventName}</p>
+          <p class="text-gray-400">Datum: ${eventDate}</p>
+        </div>
+        <div>
+          <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Upravit</button>
+          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Smazat</button>
+        </div>
+      `;
+      eventsList.appendChild(newEvent);
+
+      eventForm.reset();
+    });
+  </script>
+</body>
+</html>
