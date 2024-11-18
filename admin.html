@@ -5,23 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .hidden {
-      display: none;
-    }
-  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans leading-relaxed">
-
-  <!-- Login Form -->
+  <!-- Login Page -->
   <div id="login-page" class="min-h-screen flex justify-center items-center">
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full">
-      <h1 class="text-2xl font-bold text-red-500 mb-6 text-center">Admin Login</h1>
+      <h1 class="text-3xl font-bold text-red-500 mb-6 text-center">Admin Login</h1>
       <form id="login-form">
         <input
-          type="text"
-          id="username"
-          placeholder="Uživatelské jméno"
+          type="email"
+          id="email"
+          placeholder="E-mail"
           class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
           required
         />
@@ -54,25 +51,33 @@
 
     <!-- Content -->
     <div class="container mx-auto py-8">
-      <h2 class="text-2xl font-bold text-red-500 mb-4">Statistiky</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 class="text-lg font-bold text-white mb-2">Celkem Událostí</h3>
-          <p class="text-3xl font-bold text-red-500">12</p>
+      <!-- Statistiky -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold text-red-500 mb-4">Statistiky</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-bold">Počet návštěv</h3>
+            <p id="visit-count" class="text-3xl font-bold text-red-400">0</p>
+          </div>
+          <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-bold">Počet událostí</h3>
+            <p id="event-count" class="text-3xl font-bold text-red-400">0</p>
+          </div>
         </div>
-        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 class="text-lg font-bold text-white mb-2">Aktivní Zápasy</h3>
-          <p class="text-3xl font-bold text-red-500">5</p>
-        </div>
-        <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-          <h3 class="text-lg font-bold text-white mb-2">Noví Uživatelé</h3>
-          <p class="text-3xl font-bold text-red-500">23</p>
-        </div>
-      </div>
+      </section>
 
-      <h2 class="text-2xl font-bold text-red-500 mb-4">Správa Událostí</h2>
-      <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-        <form id="event-form">
+      <!-- Události -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold text-red-500 mb-4">Události</h2>
+        <div id="events-list" class="space-y-4">
+          <!-- Dynamicky načtené události -->
+        </div>
+      </section>
+
+      <!-- Přidání nové události -->
+      <section>
+        <h2 class="text-2xl font-bold text-red-500 mb-4">Přidat novou událost</h2>
+        <form id="event-form" class="bg-gray-800 p-6 rounded-lg shadow-lg">
           <input
             type="text"
             id="event-name"
@@ -86,6 +91,12 @@
             class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
             required
           />
+          <input
+            type="time"
+            id="event-time"
+            class="w-full bg-gray-700 text-gray-300 p-4 mb-4 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+            required
+          />
           <button
             type="submit"
             class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded shadow-lg transition duration-300"
@@ -93,76 +104,139 @@
             Přidat událost
           </button>
         </form>
-      </div>
-
-      <h3 class="text-xl font-bold text-gray-300 mb-4">Seznam Událostí</h3>
-      <div id="events-list" class="space-y-4">
-        <div class="bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center">
-          <div>
-            <p class="text-lg font-bold text-white">ZRFA Finals</p>
-            <p class="text-gray-400">Datum: 15. května 2024</p>
-          </div>
-          <div>
-            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Upravit</button>
-            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Smazat</button>
-          </div>
-        </div>
-        <!-- Další události mohou být zde dynamicky přidány -->
-      </div>
+      </section>
     </div>
   </div>
 
   <script>
-    // Přihlášení a odhlášení
+    // Firebase konfigurace
+    const firebaseConfig = {
+      apiKey: "AIzaSyDBGd3QKccAtyEv8k9nxEOp8KqRbewY5fk",
+      authDomain: "zrfa-e2706.firebaseapp.com",
+      projectId: "zrfa-e2706",
+      storageBucket: "zrfa-e2706.appspot.com",
+      messagingSenderId: "3345405956",
+      appId: "1:3345405956:web:2730888a5159154ad6bd51",
+      measurementId: "G-S6ZZCEQXMN"
+    };
+
+    // Inicializace Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    const visitCountRef = db.collection("stats").doc("visits");
+
+    // Elementy
     const loginPage = document.getElementById("login-page");
     const adminPage = document.getElementById("admin-page");
     const loginForm = document.getElementById("login-form");
     const logoutButton = document.getElementById("logout");
-
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      if (username === "admin" && password === "admin123") {
-        loginPage.classList.add("hidden");
-        adminPage.classList.remove("hidden");
-      } else {
-        alert("Špatné uživatelské jméno nebo heslo!");
-      }
-    });
-
-    logoutButton.addEventListener("click", () => {
-      adminPage.classList.add("hidden");
-      loginPage.classList.remove("hidden");
-    });
-
-    // Přidávání událostí
     const eventForm = document.getElementById("event-form");
     const eventsList = document.getElementById("events-list");
+    const visitCount = document.getElementById("visit-count");
+    const eventCount = document.getElementById("event-count");
 
+    // Zvyšování návštěvnosti
+    function incrementVisits() {
+      visitCountRef.get().then((doc) => {
+        if (doc.exists) {
+          visitCountRef.update({
+            count: doc.data().count + 1
+          });
+        } else {
+          visitCountRef.set({ count: 1 });
+        }
+      });
+    }
+
+    // Získání statistik
+    function loadStats() {
+      visitCountRef.get().then((doc) => {
+        visitCount.textContent = doc.exists ? doc.data().count : 0;
+      });
+      db.collection("events").get().then((snapshot) => {
+        eventCount.textContent = snapshot.size;
+      });
+    }
+
+    // Přihlášení
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          loginPage.classList.add("hidden");
+          adminPage.classList.remove("hidden");
+          incrementVisits();
+          loadStats();
+          loadEvents();
+        })
+        .catch((error) => {
+          alert("Chyba: " + error.message);
+        });
+    });
+
+    // Odhlášení
+    logoutButton.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        adminPage.classList.add("hidden");
+        loginPage.classList.remove("hidden");
+      });
+    });
+
+    // Načítání událostí
+    function loadEvents() {
+      eventsList.innerHTML = ""; // Vymazat seznam
+      db.collection("events").get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const event = doc.data();
+          const eventDiv = document.createElement("div");
+          eventDiv.className =
+            "bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center";
+          eventDiv.innerHTML = `
+            <div>
+              <p class="text-lg font-bold text-white">${event.name}</p>
+              <p class="text-gray-400">Datum: ${event.date} Čas: ${event.time}</p>
+            </div>
+            <div>
+              <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" onclick="deleteEvent('${doc.id}')">Smazat</button>
+            </div>
+          `;
+          eventsList.appendChild(eventDiv);
+        });
+      });
+    }
+
+    // Přidání nové události
     eventForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const eventName = document.getElementById("event-name").value;
       const eventDate = document.getElementById("event-date").value;
+      const eventTime = document.getElementById("event-time").value;
 
-      const newEvent = document.createElement("div");
-      newEvent.className =
-        "bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center";
-      newEvent.innerHTML = `
-        <div>
-          <p class="text-lg font-bold text-white">${eventName}</p>
-          <p class="text-gray-400">Datum: ${eventDate}</p>
-        </div>
-        <div>
-          <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mr-2">Upravit</button>
-          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Smazat</button>
-        </div>
-      `;
-      eventsList.appendChild(newEvent);
-
-      eventForm.reset();
+      db.collection("events").add({
+        name: eventName,
+        date: eventDate,
+        time: eventTime
+      }).then(() => {
+        alert("Událost přidána!");
+        loadEvents();
+        loadStats();
+        eventForm.reset();
+      });
     });
+
+    // Smazání události
+    function deleteEvent(id) {
+      db.collection("events").doc(id).delete().then(() => {
+        alert("Událost smazána!");
+        loadEvents();
+        loadStats();
+      });
+    }
   </script>
 </body>
 </html>
