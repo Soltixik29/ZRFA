@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZRFA - Bojová Organizace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Animace přechodu */
+    .fade-in {
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans leading-relaxed">
+  <!-- Header -->
+  <header class="bg-gray-800 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center p-5">
+      <h1 class="text-3xl font-bold text-red-500">ZRFA</h1>
+      <nav class="space-x-6">
+        <a href="#about" class="hover:text-red-400 transition duration-300">O nás</a>
+        <a href="#events" class="hover:text-red-400 transition duration-300">Události</a>
+        <a href="#contact" class="hover:text-red-400 transition duration-300">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="relative bg-gray-800">
+    <div class="container mx-auto text-center py-16 fade-in">
+      <h2 class="text-4xl font-bold text-white mb-4">Bojová Organizace ZRFA</h2>
+      <p class="text-lg text-gray-400 mb-6">Připraveni na boj? Připojte se k nám a zažijte adrenalin jako nikdy předtím!</p>
+      <a href="#contact" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full shadow-lg transition duration-300">
+        Přidejte se
+      </a>
+    </div>
+    <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-gray-900 opacity-80"></div>
+  </section>
+
+  <!-- O nás -->
+  <section id="about" class="py-16">
+    <div class="container mx-auto text-center">
+      <h3 class="text-3xl font-bold text-red-500 mb-6">O nás</h3>
+      <p class="text-lg text-gray-300">
+        ZRFA je bojová organizace zaměřená na profesionální zápasy, které kombinují sílu, dovednost a odhodlání. Naším cílem je
+        poskytnout platformu pro talentované bojovníky a nabídnout divákům nezapomenutelné zážitky.
+      </p>
+    </div>
+  </section>
+
+  <!-- Události -->
+  <section id="events" class="bg-gray-800 py-16">
+    <div class="container mx-auto">
+      <h3 class="text-3xl font-bold text-center text-red-500 mb-10">Nadcházející Události</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-700 rounded-lg shadow-lg p-6 hover:shadow-2xl transition duration-300">
+          <h4 class="text-xl font-bold text-white mb-3">ZRFA Night 2024</h4>
+          <p class="text-gray-400">Datum: 18. března 2024</p>
+          <p class="text-gray-400">Místo: Praha</p>
+          <button class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition duration-300">
+            Více informací
+          </button>
+        </div>
+        <div class="bg-gray-700 rounded-lg shadow-lg p-6 hover:shadow-2xl transition duration-300">
+          <h4 class="text-xl font-bold text-white mb-3">ZRFA Challenge</h4>
+          <p class="text-gray-400">Datum: 2. dubna 2024</p>
+          <p class="text-gray-400">Místo: Brno</p>
+          <button class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition duration-300">
+            Více informací
+          </button>
+        </div>
+        <div class="bg-gray-700 rounded-lg shadow-lg p-6 hover:shadow-2xl transition duration-300">
+          <h4 class="text-xl font-bold text-white mb-3">ZRFA Finals</h4>
+          <p class="text-gray-400">Datum: 15. května 2024</p>
+          <p class="text-gray-400">Místo: Ostrava</p>
+          <button class="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition duration-300">
+            Více informací
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section id="contact" class="py-16">
+    <div class="container mx-auto text-center">
+      <h3 class="text-3xl font-bold text-red-500 mb-6">Kontaktujte nás</h3>
+      <p class="text-lg text-gray-300 mb-6">Máte otázky? Spojte se s námi prostřednictvím formuláře níže.</p>
+      <form class="max-w-lg mx-auto">
+        <input
+          type="text"
+          placeholder="Vaše jméno"
+          class="w-full bg-gray-800 text-gray-300 p-4 mb-4 rounded shadow focus:outline-none focus:ring-2 focus:ring-red-500"
+        />
+        <input
+          type="email"
+          placeholder="Váš email"
+          class="w-full bg-gray-800 text-gray-300 p-4 mb-4 rounded shadow focus:outline-none focus:ring-2 focus:ring-red-500"
+        />
+        <textarea
+          placeholder="Vaše zpráva"
+          rows="4"
+          class="w-full bg-gray-800 text-gray-300 p-4 mb-4 rounded shadow focus:outline-none focus:ring-2 focus:ring-red-500"
+        ></textarea>
+        <button
+          type="submit"
+          class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full shadow-lg transition duration-300"
+        >
+          Odeslat
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 py-6">
+    <div class="container mx-auto text-center text-gray-400">
+      © 2024 ZRFA. Všechna práva vyhrazena.
+    </div>
+  </footer>
+</body>
+</html>
