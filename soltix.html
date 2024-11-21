@@ -7,18 +7,25 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-        .skeleton {
-            background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
+        .cover-image {
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 1rem;
         }
-        @keyframes skeleton-loading {
-            from {
-                background-position: 200% 0;
-            }
-            to {
-                background-position: -200% 0;
-            }
+        .play-btn {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+        .play-btn:hover {
+            transform: scale(1.2);
         }
     </style>
 </head>
@@ -42,7 +49,7 @@
     <section class="container mx-auto mt-10">
         <h2 class="text-2xl font-semibold text-center mb-6">My Tracks</h2>
         <div id="tracks-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Skeleton Loader -->
+            <!-- Placeholder skeleton -->
             <div class="skeleton h-64 rounded-lg"></div>
             <div class="skeleton h-64 rounded-lg"></div>
             <div class="skeleton h-64 rounded-lg"></div>
@@ -56,41 +63,41 @@
 
     <!-- JavaScript -->
     <script>
-        // Data pro skladby
         const tracks = [
             {
                 title: "Demons",
                 duration: "3:45",
                 album: "Demons",
-                cover: "https://via.placeholder.com/300",
+                cover: "https://via.placeholder.com/3000",
                 audio: "track1.mp3"
             },
             {
                 title: "Angels",
                 duration: "4:02",
                 album: "Heaven",
-                cover: "https://via.placeholder.com/300",
+                cover: "https://via.placeholder.com/3000",
                 audio: "track2.mp3"
             },
             {
                 title: "Lost Souls",
                 duration: "3:58",
                 album: "Journey",
-                cover: "https://via.placeholder.com/300",
+                cover: "https://via.placeholder.com/3000",
                 audio: "track3.mp3"
             }
         ];
 
-        // Načítání skladeb
-        const tracksContainer = document.getElementById('tracks-container');
+        let currentlyPlaying = null; // Stopovací logika
 
-        // Po 2 sekundách skryj skeleton a vykresli skladby
+        const tracksContainer = document.getElementById("tracks-container");
+
+        // Simulace načítání dat
         setTimeout(() => {
-            tracksContainer.innerHTML = tracks.map(track => `
+            tracksContainer.innerHTML = tracks.map((track, index) => `
                 <div class="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition">
-                    <div class="relative">
-                        <img src="${track.cover}" alt="${track.title}" class="rounded-lg w-full h-48 object-cover">
-                        <button onclick="playTrack('${track.audio}')" class="absolute bottom-2 right-2 bg-purple-600 text-white p-2 rounded-full shadow-lg hover:bg-purple-700 transition">
+                    <div class="relative group">
+                        <img src="${track.cover}" alt="${track.title}" class="cover-image">
+                        <button id="play-btn-${index}" class="play-btn absolute inset-0 m-auto hidden group-hover:flex transition" onclick="togglePlay(${index})">
                             <i class="fas fa-play"></i>
                         </button>
                     </div>
@@ -98,14 +105,35 @@
                     <p class="text-gray-400 text-sm">Duration: ${track.duration}</p>
                     <p class="text-gray-400 text-sm">Album: ${track.album}</p>
                 </div>
-            `).join('');
+            `).join("");
         }, 2000);
 
-        // Funkce pro přehrání skladby
-        const playTrack = (audioSrc) => {
-            const audio = new Audio(audioSrc);
-            audio.play();
-        };
+        function togglePlay(index) {
+            const track = tracks[index];
+            const btn = document.getElementById(`play-btn-${index}`);
+
+            if (currentlyPlaying && currentlyPlaying.audio !== track.audio) {
+                currentlyPlaying.audioObject.pause();
+                currentlyPlaying.btn.innerHTML = `<i class="fas fa-play"></i>`;
+                currentlyPlaying = null;
+            }
+
+            if (!currentlyPlaying || currentlyPlaying.audio !== track.audio) {
+                const audio = new Audio(track.audio);
+                audio.play();
+                btn.innerHTML = `<i class="fas fa-stop"></i>`;
+                currentlyPlaying = { audioObject: audio, btn, audio: track.audio };
+
+                audio.onended = () => {
+                    btn.innerHTML = `<i class="fas fa-play"></i>`;
+                    currentlyPlaying = null;
+                };
+            } else {
+                currentlyPlaying.audioObject.pause();
+                btn.innerHTML = `<i class="fas fa-play"></i>`;
+                currentlyPlaying = null;
+            }
+        }
     </script>
 </body>
 </html>
