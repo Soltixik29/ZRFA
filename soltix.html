@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soltix | Artist Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 py-6 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold uppercase tracking-wide">Soltix</h1>
+            <p class="text-gray-300 mt-2 text-lg">Official Music Page</p>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="container mx-auto mt-10 text-center">
+        <img src="https://via.placeholder.com/150" alt="Soltix Logo" class="w-40 h-40 mx-auto rounded-full shadow-lg">
+        <h2 class="text-3xl font-extrabold mt-6">Welcome to Soltix's World</h2>
+        <p class="text-gray-400 mt-4 text-lg">"Feel the beats, live the vibes." 🎵</p>
+    </section>
+
+    <!-- Music Section -->
+    <section class="container mx-auto mt-10">
+        <h2 class="text-2xl font-semibold text-center mb-6">My Tracks</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Track 1 -->
+            <div class="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition">
+                <h3 class="text-xl font-bold mb-2">Track Name 1</h3>
+                <audio controls class="w-full mt-2">
+                    <source src="track1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            <!-- Track 2 -->
+            <div class="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition">
+                <h3 class="text-xl font-bold mb-2">Track Name 2</h3>
+                <audio controls class="w-full mt-2">
+                    <source src="track2.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            <!-- Track 3 -->
+            <div class="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition">
+                <h3 class="text-xl font-bold mb-2">Track Name 3</h3>
+                <audio controls class="w-full mt-2">
+                    <source src="track3.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="container mx-auto mt-16 bg-gray-800 p-6 rounded-lg shadow-md text-center">
+        <h2 class="text-2xl font-bold mb-4">About Me</h2>
+        <p class="text-gray-400">
+            Hi, I'm Soltix, a passionate music producer and artist. I create beats, vibes, and energy that inspire and move people. Stay tuned for my latest releases and upcoming projects!
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-center py-6 mt-10">
+        <p class="text-gray-400">&copy; 2024 Soltix. All rights reserved.</p>
+        <div class="flex justify-center space-x-4 mt-4">
+            <a href="#" class="text-gray-400 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M24 0H0v24h24z" fill="none"/>
+                    <path d="M16.003 3.5c1.386 0 2.51 1.153 2.51 2.573v12.354c0 1.42-1.124 2.573-2.51 2.573H7.997c-1.386 0-2.51-1.153-2.51-2.573V6.073c0-1.42 1.124-2.573 2.51-2.573h8.006z" fill="currentColor"/>
+                </svg>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M16.003 3.5c1.386 0 2.51 1.153 2.51 2.573v12.354c0 1.42-1.124 2.573-2.51 2.573H7.997c-1.386 0-2.51-1.153-2.51-2.573V6.073c0-1.42 1.124-2.573 2.51-2.573h8.006z" fill="currentColor"/>
+                </svg>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
